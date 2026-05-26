@@ -1,0 +1,66 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[margin=2.5cm]{geometry} 
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{makecell}
+
+\title{Referencia Técnica}
+\author{Fabian Ochoa}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Rendimiento de Computadores}
+
+\renewcommand{\arraystretch}{1.5}
+
+\subsection{Prestaciones y Tiempo}
+\textbf{¿Para qué sirve?:} Define la relación fundamental entre el rendimiento absoluto de un computador y el tiempo que tarda en ejecutar una tarea.
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}\hline
+         \textbf{FÓRMULA} & \textbf{EXPLICACIÓN} \\\hline
+         \texttt{Prestaciones(X) = 1 / Tiempo(X)} & Las prestaciones son inversamente proporcionales al tiempo; para maximizar el rendimiento se debe minimizar el tiempo. \\ \hline
+    \end{tabularx}    
+\end{table}
+
+\subsection{Regla de Comparación entre Máquinas}
+\textbf{¿Para qué sirve?:} Establece la regla lógica de comparación entre dos máquinas para determinar cuál es más rápida.
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}\hline
+         \textbf{FÓRMULA} & \textbf{EXPLICACIÓN} \\\hline
+         \makecell[l]{\texttt{Prestaciones(X) > Prestaciones(Y)} \\ \texttt{implica} \\ \texttt{Tiempo(Y) > Tiempo(X)}} & Si una máquina X es más rápida que Y, significa que la máquina Y requiere más tiempo para completar la misma tarea. \\ \hline
+    \end{tabularx}    
+\end{table}
+
+\subsection{Cálculo de Velocidad Relativa usando Prestaciones}
+\textbf{¿Para qué sirve?:} Calcula cuántas veces (n) es más rápida la máquina X que la Y utilizando directamente la relación entre sus prestaciones.
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}\hline
+         \textbf{FÓRMULA} & \textbf{EXPLICACIÓN} \\\hline
+         \texttt{n = Prestaciones(X) / Prestaciones(Y)} & Se utiliza una proporción directa entre sus capacidades de rendimiento. \\ \hline
+    \end{tabularx}    
+\end{table}
+
+\subsection{Cálculo de Velocidad Relativa usando Tiempos}
+\textbf{¿Para qué sirve?:} Calcula cuántas veces (n) es más rápida la máquina X que la Y utilizando la inversa de los tiempos de ejecución.
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}\hline
+         \textbf{FÓRMULA} & \textbf{EXPLICACIÓN} \\\hline
+         \texttt{n = Tiempo(Y) / Tiempo(X)} & Dado que medir prestaciones es complejo, se usa la inversa del tiempo de la máquina más lenta respecto a la más rápida. \\ \hline
+    \end{tabularx}    
+\end{table}
+
+\end{document}
