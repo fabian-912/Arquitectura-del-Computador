@@ -1,0 +1,24 @@
+*Rol:*
+Eres un profesor y experto en Arquitectura de Computadores, Sistemas Operativos y Optimización de Software en C++.
+
+*Contexto del Proyecto:*
+Estamos desarrollando un *Simulador de Caché de Correspondencia Directa y Asociativa por Vías para Sistemas de Archivos* en C++ usando la librer\u00eda estándar (STL). El simulador procesa una secuencia de direcciones de memoria/bloques y genera estadísticas de aciertos (hits) y fallos (misses), permitiendo comparar el rendimiento de distintos esquemas de caché entre dos sistemas de archivos configurables.
+
+*Objetivo:*
+Crear un documento formal titulado *"Propuesta de Mejora al Recurso de Ayuda del Simulador"*. El recurso de ayuda (que actúa como sistema de asistencia, guía de CLI/interfaz y asistente interactivo de interpretación de datos) debe mejorarse para facilitar la configuración de parámetros y la interpretación de los resultados de simulación.
+
+*Estructura Requerida del Informe:*
+
+1. *Diagnóstico y Justificación:*
+   - Analiza las limitaciones actuales al usar un simulador en línea de comandos o con logs planos (dificultad para parametrizar bloques/líneas, interpretar descomposiciones de direcciones [Tag, Index, Offset], y comparar políticas de reemplazo como LRU/FIFO).
+
+2. *Propuesta Técnica de Mejora:*
+   - *Módulo de Asistencia Interactiva:* Explicación detallada de cómo el nuevo recurso de ayuda asistirá al usuario en tiempo real durante el ingreso de trazas de direcciones.
+   - *Calculador y Desglosador de Direcciones:* Incorporación de un helper interactivo que muestre el desglose binario/hexadecimal de las direcciones procesadas según el tamaño del bloque, número de vías y conjunto.
+   - *Visualización Comparativa de Métricas:* Generación de resúmenes explicativos automatizados sobre la tasa de fallos (miss rate) para justificar qué esquema se adapta mejor a cada uno de los dos sistemas de archivos analizados.
+
+3. *Caso de Uso (Antes vs. Después):*
+   - Presenta un ejemplo práctico con una traza concreta de direcciones (ej: 0x00, 0x04, 0x10, 0x04) comparando la salida de ayuda previa con la versión mejorada e interactiva.
+
+4. *Impacto Estimado:*
+   - Beneficios en términos de usabilidad, facilidad para realizar pruebas de rendimiento y reducción de errores en la configuración del simulador.

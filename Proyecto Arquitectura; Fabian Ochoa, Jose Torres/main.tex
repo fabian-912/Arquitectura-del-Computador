@@ -1,0 +1,114 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=3cm}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{xcolor}
+
+\onehalfspacing
+
+\begin{document}
+
+% --- PORTADA ---
+\begin{titlepage}
+\centering
+{\large \textbf{Universidad de Carabobo}} \\[0.2cm]
+{\large Facultad de Ciencias y Tecnología (FACYT)} \\[0.2cm]
+{\large Departamento de Computación} \\[0.2cm]
+{\large Asignatura: Arquitectura del Computador} \\[0.2cm]
+{\large 4to Semestre} \\[2.5cm]
+
+{\Large \bfseries \color{black} SIMULADOR DE CACHÉ DE CORRESPONDENCIA DIRECTA Y ASOCIATIVA POR VÍAS EN SISTEMAS DE ARCHIVOS} \\[3.5cm]
+
+\vfill
+
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+\textbf{Profesor:} \\[0.2cm]
+José Canache
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\raggedleft
+\textbf{Estudiantes:} \\[0.2cm]
+Fabian Ochoa \\ C.I.: 32.794.284 \\[0.2cm]
+José Torres \\ C.I.: 31.530.657
+\end{minipage}
+
+\vspace{1.5cm}
+\end{titlepage}
+
+\newpage
+
+% --- CONTENIDO ---
+
+\section*{Introducción}
+En el panorama actual de la arquitectura de computadores, la marcada disparidad de velocidad entre las unidades de procesamiento, la memoria principal y los dispositivos de almacenamiento secundario continúa siendo uno de los desafíos más críticos para el rendimiento global de los sistemas informáticos. Para mitigar esta latencia y evitar cuellos de botella operativos, los sistemas modernos implementan una jerarquía de memoria basada en memorias caché, cuyo diseño se fundamenta en los principios de localidad temporal y espacial de las referencias.
+
+Por otro lado, los sistemas de archivos estructuran, organizan y gestionan el almacenamiento, recuperación y manipulación de los datos y metadatos en los soportes de almacenamiento secundario. La interacción entre los patrones de acceso generados por las operaciones de un sistema de archivos y la estructura de una memoria caché determina en gran medida la eficiencia del sistema. Sin embargo, evaluar empíricamente cómo diferentes configuraciones de caché —como el mapeo directo o la asociatividad por vías— responden ante diversas cargas de trabajo de archivos requiere de herramientas analíticas especializadas.
+
+Este informe presenta el diseño, la implementación algorítmica y el análisis de rendimiento de un Simulador de Caché de Correspondencia Directa y Asociativa por Vías, desarrollado en C++ utilizando la Biblioteca Estándar de Plantillas (STL). El propósito principal de este simulador es procesar secuencias de direcciones de memoria, incorporar los perfiles estructurales de dos sistemas de archivos comparativos y cuantificar métricas esenciales de desempeño —tales como aciertos (hits), fallos (misses) y la tasa de aciertos (hit ratio)—. Mediante este enfoque experimental, se busca ofrecer una evaluación rigurosa y comparativa de los distintos esquemas de caché, proporcionando bases técnicas sólidas para la optimización de arquitecturas de memoria y almacenamiento.
+
+\section{El Problema}
+El proyecto aborda el diseño e implementación de un Simulador de Caché de Correspondencia Directa y Asociativa por Vías aplicado al contexto de Sistemas de Archivos. En el ámbito de la arquitectura de computadores y los sistemas operativos, la gestión eficiente de la jerarquía de memoria y el almacenamiento secundario es fundamental para mitigar la latencia de acceso a datos. 
+
+El problema central consiste en modelar computacionalmente el comportamiento de una memoria caché bajo dos esquemas de organización fundamentales:
+\begin{itemize}
+    \item \textbf{Caché de Mapeo Directo (Direct-Mapped Cache):} Donde cada bloque de memoria principal se mapea a una única línea específica en la caché.
+    \item \textbf{Caché Asociativa por Vías (Set-Associative Cache):} Donde un bloque de memoria puede ubicarse en cualquiera de las vías disponibles dentro de un conjunto determinado, reduciendo los fallos por conflictos (\textit{conflict misses}).
+\end{itemize}
+
+Para lograr esto, el simulador debe aceptar como entrada una secuencia de direcciones de memoria (provenientes de trazas reales o sintéticas) y procesarlas tomando en cuenta las características estructurales y operativas de dos sistemas de archivos diferentes a comparar. El objetivo final es evaluar, medir y comparar el rendimiento de los distintos esquemas de caché en función de métricas cuantitativas clave, tales como el número de aciertos (\textit{hits}), fallos (\textit{misses}) y la tasa de aciertos (\textit{hit ratio}). 
+
+\section{Técnicas Computacionales para su Solución}
+Para resolver el problema planteado, se ha desarrollado una solución en el lenguaje de programación C++ (específicamente utilizando el estándar C++17), aprovechando las ventajas de rendimiento del lenguaje y la flexibilidad de la Biblioteca Estándar de Plantillas (\textit{Standard Template Library - STL}). 
+
+\subsection{Entorno de Compilación y Configuración}
+El desarrollo y compilación del software se gestiona mediante un archivo de automatización (\textit{Makefile}), configurado con optimizaciones del compilador GCC (\texttt{-O2}) y banderas estrictas de advertencia (\texttt{-Wall -Wextra}) para garantizar la robustez del código: 
+\begin{itemize}
+    \item \textbf{Compilador:} \texttt{g++}
+    \item \textbf{Estándar:} C++17 (\texttt{-std=c++17})
+    \item \textbf{Módulos principales:} \texttt{main.cpp}, \texttt{cache.hpp}, \texttt{filesystem\_profile.hpp} y \texttt{trace\_generator.hpp}. 
+\end{itemize}
+
+\subsection{Estructuras de Datos en la STL}
+La implementación hace uso intensivo de contenedores avanzados de la STL para modelar la jerarquía y el estado de la memoria caché:
+\begin{itemize}
+    \item \textbf{\texttt{std::vector}:} Utilizado para almacenar de forma dinámica los conjuntos de la caché, las líneas de caché por vía, los perfiles de los sistemas de archivos (\texttt{FileSystemProfile}) y los resultados de las ejecuciones de simulación (\texttt{RunResult}). El uso de métodos como \texttt{reserve()} optimiza la asignación de memoria dinámica para evitar realocaciones innecesarias. 
+    \item \textbf{\texttt{std::list}:} Empleado para gestionar las listas de control de acceso y las políticas de reemplazo en las vías asociativas (como el seguimiento de bloques menos recientemente usados - LRU).
+    \item \textbf{\texttt{std::ifstream} y flujos de E/S:} Utilizados para la lectura estructurada de archivos de trazas de direcciones de memoria y la persistencia de configuraciones. 
+\end{itemize}
+
+\subsection{Algoritmos de Simulación y Procesamiento}
+\begin{itemize}
+    \item \textbf{Descomposición de Direcciones:} El algoritmo toma cada dirección de memoria de 64 bits (o de tamaño estándar) de la traza de entrada y la descompone bit a bit mediante operaciones de desplazamiento (\textit{bit shifting}) y máscaras (\textit{bitwise AND}):
+    \begin{itemize}
+        \item \textbf{Desplazamiento (\textit{Offset}):} Bits inferiores para determinar la posición exacta del byte dentro del bloque.
+        \item \textbf{Índice de Conjunto (\textit{Index}):} Bits intermedios para seleccionar el conjunto (\textit{set}) correspondiente en la caché.
+        \item \textbf{Etiqueta (\textit{Tag}):} Bits superiores almacenados en la línea de caché para verificar si la dirección buscada coincide con el bloque cargado.
+    \end{itemize}
+    \item \textbf{Generación y Carga de Trazas:} El simulador soporta tanto la carga de trazas desde archivos externos (\texttt{loadTraceFromFile}) como la generación sintética de secuencias de direcciones con localidad de referencias ajustable (\texttt{generateTrace}), permitiendo simular patrones de acceso realistas de los sistemas de archivos bajo estudio. 
+    \item \textbf{Control de Aciertos y Fallos:} Iteración sobre cada acceso de la traza para comprobar la validez de la etiqueta y el estado de ocupación de las vías, actualizando contadores atómicos de aciertos (\textit{Hits}) y fallos (\textit{Misses}) y calculando la tasa de aciertos (\textit{HitRatio}). 
+\end{itemize}
+
+\section{Análisis y Comparación de Resultados}
+El análisis de los resultados obtenidos a través del simulador permite evaluar el comportamiento de los esquemas de caché bajo las restricciones operativas de los dos sistemas de archivos comparados: 
+
+\subsection{Evaluación de Métricas de Rendimiento}
+El simulador genera de manera tabular y estadística las siguientes métricas para cada combinación evaluada:
+\begin{itemize}
+    \item \textbf{Número de Aciertos (\textit{Hits}):} Cantidad de veces que la dirección solicitada se encontraba almacenada en la caché, evitando el acceso al sistema de archivos subyacente.
+    \item \textbf{Número de Fallos (\textit{Misses}):} Accesos que requirieron buscar la información en el nivel inferior de memoria.
+    \item \textbf{Tasa de Aciertos (\textit{Hit Ratio}):} Expresada como el cociente entre los aciertos totales y el número total de accesos de la traza, sirviendo como indicador principal de la eficiencia del esquema.
+\end{itemize}
+
+\subsection{Comparación entre Esquemas (Mapeo Directo vs. Asociativo por Vías)}
+\begin{itemize}
+    \item \textbf{Impacto del Grado de Asociatividad:} Los resultados demuestran que incrementar el número de vías (\textit{n-way set-associative}) reduce drásticamente los fallos por conflictos, especialmente en cargas de trabajo de sistemas de archivos donde múltiples archivos o metadatos (como inodos o tablas de asignación) comparten los mismos índices de caché.
+    \item \textbf{Tamaño de Bloque y Localidad:} La variación en el tamaño de los bloques de los sistemas de archivos analizados muestra un compromiso directo (\textit{trade-off}): bloques más grandes aprovechan mejor la localidad espacial para secuencias de lectura contiguas, pero incrementan la penalización por fallo y pueden generar mayor proporción de desalojos prematuros (\textit{thrashing}) en cachés de menor capacidad total.
+    \item \textbf{Conclusión Comparativa:} El informe generado por el simulador permite identificar cuantitativamente cuál esquema de caché maximiza el \textit{hit ratio} para las características específicas de cada sistema de archivos evaluado, ofreciendo una base empírica para la optimización del rendimiento en arquitecturas de almacenamiento. 
+\end{itemize}
+
+\end{document}
